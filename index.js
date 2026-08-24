@@ -10,4 +10,4 @@ app.use(express.json());
 
 app.use("/url", urlRoutes);
 
-app.listen(PORT, () => console.log("Server listening at: ", PORT));
+app.listen(PORT, () => console.log(`Server listening at ${PORT}`));

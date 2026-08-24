@@ -1,0 +1,39 @@
+import { nanoid } from "nanoid";
+import URL from "../models/url.js";
+
+async function handleUrlShortening(req, res) {
+  const redirectUrl = req.body.url;
+  //   console.log("Received request body:", req.body.url); // Debugging line
+  //   console.log("Received redirectUrl:", redirectUrl); // Debugging line
+  if (!redirectUrl) {
+    return res.status(400).json({ error: "redirectUrl is required" });
+  }
+  const shortId = nanoid(8);
+  const shortUrl = `short.y/${shortId}`;
+
+  await URL.create({
+    shortId: shortId,
+    redirectUrl: redirectUrl,
+    shortUrl: shortUrl,
+    visitHistory: [],
+  });
+
+  res
+    .status(201)
+    .json({
+      shortId,
+      message: "URL shortened successfully",
+      shortUrl: shortUrl,
+    });
+}
+
+async function handleGetRedirect(req, res) {
+    const shortId = req.params.shortId;
+    const entry = await URL.findOneAndUpdate({ shortId: shortId }, { $push: { visitHistory: { timestamp: Date.now() } } }, { new: true });
+    if (!entry) {
+        return res.status(404).json({ error: "URL not found" });
+    }
+    res.redirect(entry.redirectUrl);
+}
+
+export { handleUrlShortening, handleGetRedirect };

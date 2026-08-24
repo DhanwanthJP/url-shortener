@@ -36,4 +36,13 @@ async function handleGetRedirect(req, res) {
     res.redirect(entry.redirectUrl);
 }
 
-export { handleUrlShortening, handleGetRedirect };
+async function handleGetAnalytics(req, res) {
+    const shortId = req.params.shortId;
+    const entry = await URL.findOne({ shortId: shortId });
+    if (!entry) {
+        return res.status(404).json({ error: "URL not found" });
+    }
+    res.json({ "Total Visits": entry.visitHistory.length, "Visit History": entry.visitHistory });
+}
+
+export { handleUrlShortening, handleGetRedirect, handleGetAnalytics };

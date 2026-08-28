@@ -18,13 +18,7 @@ async function handleUrlShortening(req, res) {
     visitHistory: [],
   });
 
-  res
-    .status(201)
-    .json({
-      shortId,
-      message: "URL shortened successfully",
-      shortUrl: shortUrl,
-    });
+  res.render("home",{id: shortId});
 }
 
 async function handleGetRedirect(req, res) {
@@ -36,7 +30,7 @@ async function handleGetRedirect(req, res) {
     res.redirect(entry.redirectUrl);
 }
 
-async function handleGetAnalytics(req, res) {
+async function handleGetAnalyticsOne(req, res) {
     const shortId = req.params.shortId;
     const entry = await URL.findOne({ shortId: shortId });
     if (!entry) {
@@ -45,4 +39,9 @@ async function handleGetAnalytics(req, res) {
     res.json({ "Total Visits": entry.visitHistory.length, "Visit History": entry.visitHistory });
 }
 
-export { handleUrlShortening, handleGetRedirect, handleGetAnalytics };
+async function handleGetAnalyticsAll(req, res) {
+    const entries = await URL.find();
+    res.render("analytics", { entries: entries });
+}
+
+export { handleUrlShortening, handleGetRedirect, handleGetAnalyticsOne, handleGetAnalyticsAll };

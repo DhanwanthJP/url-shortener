@@ -5,19 +5,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Url Shortener</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+
 </head>
 
 <body>
-    <h1>Hello from Server</h1>
-    <ol>
+    <h1>URL Shortener</h1>
+   <% if (locals.id) { %>
+    <h3>Shortened URL: http://localhost:8001/url/<%= locals.id %></h3>
+   <% } %>
+    <form action="/url" method="POST">
+        <label for="url">Enter URL to shorten:</label>
+        <input type="text" name="url" placeholder="https://example.com" required>
+        <button type="submit">Generate</button>
+    </form>
+
+    <% if (locals.urls) { %>
+        
+    <% } %>
+
+    <!-- <ol>
         <h4>
-            <% urls.forEach(url => { %>
-                <li><a href="/url/<%= url.shortId %>"><%=url.shortUrl %></a> - <%= url.redirectUrl %></li>
-            <%                           
-            }); %>
+            
 
         </h4>
-    </ol>
+    </ol> -->
 </body>
 
 </html>

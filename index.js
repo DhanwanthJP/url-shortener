@@ -1,12 +1,11 @@
 import express from "express";
+import path from "path";
 
 import urlRoutes from "./routes/url.js";
 import analyticRoutes from "./routes/analytics.js";
 import staticRoutes from "./routes/staticRouter.js";
 
 import connectDB from "./connect.js";
-
-import path from "path";
 
 const app = express();
 const PORT = 8001;
